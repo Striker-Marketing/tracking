@@ -76,8 +76,9 @@ const initStrikerTracking = () => {
     let firstNameElValue = form.querySelector("[name='first_name']")?.value;
     let lastNameElValue = form.querySelector("[name='last_name']")?.value;
     const fullNameElValue = form.querySelector("[name='full_name']")?.value;
-    if (fullNameElValue) {
-      const parts = fullNameElValue.trim().split(/\s+/).filter(Boolean);
+    const nameToSplit = fullNameElValue || (!lastNameElValue ? firstNameElValue : null);
+    if (nameToSplit) {
+      const parts = nameToSplit.trim().split(/\s+/).filter(Boolean);
       firstNameElValue = parts[0];
       lastNameElValue = parts.slice(1).join(" ");
     }
@@ -105,4 +106,4 @@ const initStrikerTracking = () => {
     });
   });
 };
-initStrikerTracking()
+initStrikerTracking();
