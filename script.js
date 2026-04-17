@@ -105,3 +105,4 @@ const initStrikerTracking = () => {
     });
   });
 };
+initStrikerTracking()
