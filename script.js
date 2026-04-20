@@ -26,16 +26,33 @@ const initStrikerTracking = () => {
     });
   };
 
-  const getUserIp = async () => {
+  const getUserGeo = async () => {
     try {
-      let userIp = getCookie("user_ip");
-      if (userIp) return userIp;
-      const ipResponse = await fetch("https://api.ipify.org/?format=json");
-      const ipData = await ipResponse.json();
-      setCookie("user_ip", ipData.ip, 1);
-      return ipData.ip;
+      const cached = {
+        user_ip: getCookie("user_ip"),
+        zip: getCookie("user_ip_zip"),
+        city: getCookie("user_ip_city"),
+        state: getCookie("user_ip_state"),
+        country: getCookie("user_ip_country"),
+      };
+      if (cached.user_ip) return cached;
+      const res = await fetch("https://freeipapi.com/api/json");
+      const data = await res.json();
+      const geo = {
+        user_ip: data.ipAddress,
+        zip: data.zipCode,
+        city: data.cityName,
+        state: data.regionName,
+        country: data.countryName,
+      };
+      if (geo.user_ip) setCookie("user_ip", geo.user_ip, 1);
+      if (geo.zip) setCookie("user_ip_zip", geo.zip, 1);
+      if (geo.city) setCookie("user_ip_city", geo.city, 1);
+      if (geo.state) setCookie("user_ip_state", geo.state, 1);
+      if (geo.country) setCookie("user_ip_country", geo.country, 1);
+      return geo;
     } catch {
-      return null;
+      return {};
     }
   };
 
@@ -50,7 +67,12 @@ const initStrikerTracking = () => {
   const triggerPageView = async () => {
     const dataLayerObj = {};
     dataLayerObj["event_id"] = uuidv4();
-    dataLayerObj["user_ip"] = await getUserIp();
+    const geo = await getUserGeo();
+    if (geo.user_ip) dataLayerObj["user_ip"] = geo.user_ip;
+    if (geo.zip) dataLayerObj["zip"] = geo.zip;
+    if (geo.city) dataLayerObj["city"] = geo.city;
+    if (geo.state) dataLayerObj["state"] = geo.state;
+    if (geo.country) dataLayerObj["country"] = geo.country;
     dataLayerObj["external_id"] = getUserId();
     dataLayerObj["user_agent"] = navigator.userAgent;
     dataLayerObj["user_fbc"] = getCookie("_fbc") || (urlParams.get("fbclid") ? `fb.1.${Date.now()}.${urlParams.get("fbclid")}` : null);
@@ -83,10 +105,10 @@ const initStrikerTracking = () => {
       lastNameElValue = parts.slice(1).join(" ");
     }
     const phoneElValue = form.querySelector("[type='tel'],[name='phone_number'],[name='phone']")?.value;
-    const zipElValue = form.querySelector("[name='zip'],[name='postal_code']")?.value;
-    const cityElValue = form.querySelector("[name='city']")?.value;
-    const stateElValue = form.querySelector("[name='state']")?.value;
-    const countryElValue = form.querySelector("[name='country']")?.value;
+    const zipElValue = form.querySelector("[name='zip'],[name='postal_code']")?.value || getCookie("user_ip_zip");
+    const cityElValue = form.querySelector("[name='city']")?.value || getCookie("user_ip_city");
+    const stateElValue = form.querySelector("[name='state']")?.value || getCookie("user_ip_state");
+    const countryElValue = form.querySelector("[name='country']")?.value || getCookie("user_ip_country");
     [
       { value: emailElValue, id: "email" },
       { value: firstNameElValue, id: "first_name" },
