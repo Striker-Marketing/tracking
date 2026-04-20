@@ -36,7 +36,7 @@ const initStrikerTracking = () => {
         country: getCookie("user_ip_country"),
       };
       if (cached.user_ip) return cached;
-      const res = await fetch("https://freeipapi.com/api/json");
+      const res = await fetch("https://free.freeipapi.com/api/json");
       const data = await res.json();
       const geo = {
         user_ip: data.ipAddress,
