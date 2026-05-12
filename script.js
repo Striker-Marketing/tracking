@@ -40,16 +40,16 @@ const initStrikerTracking = () => {
       const data = await res.json();
       const geo = {
         user_ip: data.ipAddress,
-        zip: data.zipCode,
-        city: data.cityName,
-        state: data.regionName,
-        country: data.countryName,
+        zip: cached.zip || data.zipCode,
+        city: cached.city || data.cityName,
+        state: cached.state || data.regionName,
+        country: cached.country || data.countryName,
       };
       if (geo.user_ip) setCookie("user_ip", geo.user_ip, 1);
-      if (geo.zip) setCookie("user_ip_zip", geo.zip, 1);
-      if (geo.city) setCookie("user_ip_city", geo.city, 1);
-      if (geo.state) setCookie("user_ip_state", geo.state, 1);
-      if (geo.country) setCookie("user_ip_country", geo.country, 1);
+      if (geo.zip) setCookie("user_ip_zip", geo.zip);
+      if (geo.city) setCookie("user_ip_city", geo.city);
+      if (geo.state) setCookie("user_ip_state", geo.state);
+      if (geo.country) setCookie("user_ip_country", geo.country);
       return geo;
     } catch {
       return {};
@@ -104,11 +104,21 @@ const initStrikerTracking = () => {
       firstNameElValue = parts[0];
       lastNameElValue = parts.slice(1).join(" ");
     }
+    const zipFormValue = form.querySelector("[name='zip'],[name='postal_code']")?.value;
+    const cityFormValue = form.querySelector("[name='city']")?.value;
+    const stateFormValue = form.querySelector("[name='state']")?.value;
+    const countryFormValue = form.querySelector("[name='country']")?.value;
+
+    if (zipFormValue) setCookie("user_ip_zip", zipFormValue);
+    if (cityFormValue) setCookie("user_ip_city", cityFormValue);
+    if (stateFormValue) setCookie("user_ip_state", stateFormValue);
+    if (countryFormValue) setCookie("user_ip_country", countryFormValue);
+
     const phoneElValue = form.querySelector("[type='tel'],[name='phone_number'],[name='phone']")?.value;
-    const zipElValue = form.querySelector("[name='zip'],[name='postal_code']")?.value || getCookie("user_ip_zip");
-    const cityElValue = form.querySelector("[name='city']")?.value || getCookie("user_ip_city");
-    const stateElValue = form.querySelector("[name='state']")?.value || getCookie("user_ip_state");
-    const countryElValue = form.querySelector("[name='country']")?.value || getCookie("user_ip_country");
+    const zipElValue = zipFormValue || getCookie("user_ip_zip");
+    const cityElValue = cityFormValue || getCookie("user_ip_city");
+    const stateElValue = stateFormValue || getCookie("user_ip_state");
+    const countryElValue = countryFormValue || getCookie("user_ip_country");
     [
       { value: emailElValue, id: "email" },
       { value: firstNameElValue, id: "first_name" },
