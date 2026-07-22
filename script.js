@@ -61,9 +61,9 @@ const initStrikerTracking = () => {
     if (userId) return userId;
     userId = uuidv4();
     setCookie("striker_user_id", userId);
-    if (window.umami) {
-      window.umami.identify(userId);
-    }
+    // if (window.umami) {
+    //   window.umami.identify(userId);
+    // }
     return userId;
   };
 
