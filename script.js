@@ -87,6 +87,8 @@ const initStrikerTracking = () => {
 
   document.addEventListener("submit", async (e) => {
     const form = e.target;
+    const action = form.getAttribute("action");
+    if (action && action.includes("facebook")) return;
     const dataLayerObj = {};
     const userIp = getCookie("user_ip");
     if (userIp) dataLayerObj["user_ip"] = userIp;
