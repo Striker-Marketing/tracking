@@ -89,6 +89,7 @@ const initStrikerTracking = () => {
     const dataLayerObj = {};
     const userIp = getCookie("user_ip");
     if (userIp) dataLayerObj["user_ip"] = userIp;
+    dataLayerObj["external_id"] = getUserId();
     dataLayerObj["user_agent"] = navigator.userAgent;
     dataLayerObj["user_fbc"] = getCookie("_fbc") || (urlParams.get("fbclid") ? `fb.1.${Date.now()}.${urlParams.get("fbclid")}` : null);
     dataLayerObj["user_fbp"] = getCookie("_fbp");
