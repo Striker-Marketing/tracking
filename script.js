@@ -61,9 +61,6 @@ const initStrikerTracking = () => {
     if (userId) return userId;
     userId = uuidv4();
     setCookie("striker_user_id", userId);
-    // if (window.umami) {
-    //   window.umami.identify(userId);
-    // }
     return userId;
   };
 
@@ -88,8 +85,7 @@ const initStrikerTracking = () => {
   };
   triggerPageView();
 
-  document.addEventListener("submit", async (e) => {
-    const form = e.target;
+  const triggerLead = async (form) => {
     const dataLayerObj = {};
     const userIp = getCookie("user_ip");
     if (userIp) dataLayerObj["user_ip"] = userIp;
@@ -139,6 +135,8 @@ const initStrikerTracking = () => {
       event: "striker_form_submit",
       ...dataLayerObj,
     });
-  });
+  };
+
+  window.triggerStrikerLead = triggerLead;
 };
 initStrikerTracking();
