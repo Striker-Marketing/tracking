@@ -91,7 +91,7 @@ Exponha o script no `window` como `triggerStrikerLead`. Chame no evento `submit`
 
 Para que o script consiga extrair corretamente os dados, use um dos padrões abaixo:
 
-- **Nome completo**: use `name="full_name"` (será dividido em `first_name` e `last_name`).
+- **Nome completo**: use `name="full_name"` ou `name="name"` (será dividido em `first_name` e `last_name`).
 - **Nome separado**: use `name="first_name"` e `name="last_name"`.
 - **Nome único**: se apenas `first_name` for preenchido, o valor será dividido em primeiro e sobrenome.
 

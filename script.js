@@ -97,7 +97,7 @@ const initStrikerTracking = () => {
     const emailElValue = form.querySelector("[type='email'],[name='email']")?.value;
     let firstNameElValue = form.querySelector("[name='first_name']")?.value;
     let lastNameElValue = form.querySelector("[name='last_name']")?.value;
-    const fullNameElValue = form.querySelector("[name='full_name']")?.value;
+    const fullNameElValue = form.querySelector("[name='full_name'],[name='name']")?.value;
     const nameToSplit = fullNameElValue || (!lastNameElValue ? firstNameElValue : null);
     if (nameToSplit) {
       const parts = nameToSplit.trim().split(/\s+/).filter(Boolean);
