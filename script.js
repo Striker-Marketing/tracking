@@ -85,10 +85,11 @@ const initStrikerTracking = () => {
   };
   triggerPageView();
 
-  const triggerLead = async (form) => {
+  const triggerLead = async (form, userId) => {
     const dataLayerObj = {};
     const userIp = getCookie("user_ip");
     if (userIp) dataLayerObj["user_ip"] = userIp;
+    if (userId) dataLayerObj["user_id"] = userId;
     dataLayerObj["external_id"] = getUserId();
     dataLayerObj["user_agent"] = navigator.userAgent;
     dataLayerObj["user_fbc"] = getCookie("_fbc") || (urlParams.get("fbclid") ? `fb.1.${Date.now()}.${urlParams.get("fbclid")}` : null);
